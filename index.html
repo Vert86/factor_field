@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Factor Field - A minimalist mathematical puzzle game based on prime factorization. Reduce all numbers to 1 by strategically selecting primes!">
+    <meta name="keywords" content="puzzle game, math game, prime numbers, factorization, educational game">
+    <meta name="author" content="Factor Field">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Factor Field - The Prime Grid Puzzle">
+    <meta property="og:description" content="A minimalist mathematical puzzle game based on prime factorization">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Factor Field - The Prime Grid Puzzle">
+    <meta property="twitter:description" content="A minimalist mathematical puzzle game based on prime factorization">
+
+    <title>Factor Field - The Prime Grid Puzzle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <h1>Factor Field</h1>
+            <p class="tagline">The Prime Grid Puzzle</p>
+        </header>
+
+        <!-- Game Info -->
+        <div class="game-info">
+            <div class="info-item">
+                <span class="label">Level</span>
+                <span class="value" id="level-display">1</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Moves</span>
+                <span class="value" id="moves-display">0</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Best</span>
+                <span class="value" id="best-display">-</span>
+            </div>
+        </div>
+
+        <!-- Game Board -->
+        <div id="game-board" class="game-board"></div>
+
+        <!-- Prime Palette -->
+        <div class="prime-palette">
+            <h3>Select Prime</h3>
+            <div id="prime-buttons" class="prime-buttons"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="reset-btn" class="btn btn-secondary">Reset Level</button>
+            <button id="hint-btn" class="btn btn-secondary">Hint</button>
+        </div>
+
+        <!-- Win Modal -->
+        <div id="win-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Level Complete!</h2>
+                <div class="win-stats">
+                    <p>Moves Used: <span id="final-moves"></span></p>
+                    <p id="optimal-message"></p>
+                </div>
+                <button id="next-level-btn" class="btn btn-primary">Next Level</button>
+                <button id="replay-btn" class="btn btn-secondary">Replay</button>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li>Select a prime number from the palette</li>
+                <li>All tiles divisible by that prime will be divided</li>
+                <li>Reduce all tiles to 1 to win</li>
+                <li>Use the minimum moves for the best score!</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="levels.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
