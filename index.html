@@ -77,9 +77,9 @@
             <div class="modal-content loss-content">
                 <h2>Level Failed!</h2>
                 <div class="loss-stats">
-                    <p>❌ You've reached the move limit!</p>
+                    <p>❌ Wrong move!</p>
                     <p>Moves Used: <span id="loss-moves"></span></p>
-                    <p class="loss-message">You must solve the puzzle within the optimal move count. Calculate the exact sequence before clicking!</p>
+                    <p class="loss-message">You either clicked a prime you've already used up, or ran out of moves. Every click must be perfect!</p>
                 </div>
                 <button id="retry-btn" class="btn btn-primary">Try Again</button>
             </div>
@@ -208,11 +208,11 @@
             <div class="tutorial-section">
                 <h3>💡 Pro Tips</h3>
                 <ul class="tips-list">
+                    <li><strong>No Visual Feedback:</strong> Prime buttons never gray out - clicking a used-up prime = instant failure!</li>
+                    <li><strong>Track Mentally:</strong> You must remember which primes you've used and how many times</li>
                     <li><strong>Move Limit:</strong> You can only make as many moves as the optimal solution - no room for error!</li>
                     <li><strong>Calculate first:</strong> Work out the entire sequence mentally BEFORE clicking any primes</li>
                     <li><strong>Look for patterns:</strong> Numbers like 8 (2³) need prime 2 applied three times</li>
-                    <li><strong>Plan ahead:</strong> Every single move must be correct or you'll fail the level</li>
-                    <li><strong>Use hints:</strong> Stuck? Click the Hint button for guidance</li>
                     <li><strong>Large primes:</strong> Primes like 7, 11, 13 usually only appear once in numbers</li>
                 </ul>
             </div>

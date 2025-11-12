@@ -85,14 +85,13 @@ class FactorFieldGame {
             button.className = 'prime-btn';
             button.dataset.prime = prime;
 
-            const remaining = this.primeUsesRemaining[prime];
             const moveLimitReached = this.moves >= this.optimalMoves;
-            const isDisabled = remaining === 0 || moveLimitReached;
 
-            // Show only prime number (NO use count)
+            // Show only prime number (NO use count, NO visual feedback on remaining uses)
             button.textContent = prime;
 
-            if (isDisabled) {
+            // Only disable when move limit reached, NOT when prime uses run out
+            if (moveLimitReached) {
                 button.classList.add('disabled');
                 button.disabled = true;
             } else {
@@ -105,13 +104,17 @@ class FactorFieldGame {
     }
 
     selectPrime(prime) {
-        // Check if prime has uses remaining
-        if (this.primeUsesRemaining[prime] === 0) {
+        // Check if move limit reached
+        if (this.moves >= this.optimalMoves) {
             return;
         }
 
-        // Check if move limit reached
-        if (this.moves >= this.optimalMoves) {
+        // CRITICAL: Check if prime has uses remaining - if not, INSTANT FAIL
+        if (this.primeUsesRemaining[prime] === 0) {
+            // Clicking a used-up prime = immediate loss
+            this.moves++;
+            this.updateDisplay();
+            this.handleLoss();
             return;
         }
 
@@ -129,7 +132,7 @@ class FactorFieldGame {
         this.applyPrimeDivision(prime);
         this.moves++;
 
-        // Re-render prime buttons to show updated counts
+        // Re-render prime buttons (but they won't show disabled state)
         setTimeout(() => this.renderPrimeButtons(), 300);
 
         // Update display
