@@ -14,9 +14,9 @@ const LEVELS = [
             [15, 18, 20]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 14, 3: 10, 5: 5 }, // Limited uses - plan wisely!
+        primeCounts: { 2: 13, 3: 8, 5: 4 }, // Exact: 12,7,3 - Only 1 extra each!
         optimalMoves: 9,
-        hint: "Start with prime 2 to reduce even numbers. Watch your remaining uses!"
+        hint: "You have very limited uses - plan every move carefully!"
     },
 
     // Level 2 - Simple (3x3)
@@ -29,9 +29,9 @@ const LEVELS = [
             [9, 18, 25]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 11, 3: 9, 5: 6 },
+        primeCounts: { 2: 11, 3: 8, 5: 6 }, // Exact: 10,7,5 - Tight limits!
         optimalMoves: 10,
-        hint: "Look for numbers with multiple factors - don't waste moves!"
+        hint: "Minimal margin for error - find the right sequence!"
     },
 
     // Level 3 - Balanced (4x4)
@@ -45,9 +45,9 @@ const LEVELS = [
             [28, 24, 25, 27]
         ],
         primes: [2, 3, 5, 7],
-        primeCounts: { 2: 24, 3: 12, 5: 6, 7: 5 },
+        primeCounts: { 2: 23, 3: 13, 5: 6, 7: 4 }, // Exact: 22,12,5,3
         optimalMoves: 20,
-        hint: "Use prime 7 wisely - it appears in 14, 21, and 28"
+        hint: "Prime 7 appears only 3 times - use it wisely or fail!"
     },
 
     // Level 4 - Powers of 2 (3x3)
@@ -60,9 +60,9 @@ const LEVELS = [
             [6, 18, 24]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 22, 3: 6, 5: 4 },
+        primeCounts: { 2: 24, 3: 6, 5: 2 }, // Exact: 23,5,1 - Very strict!
         optimalMoves: 12,
-        hint: "Powers of 2 need multiple applications of prime 2"
+        hint: "32=2⁵, 16=2⁴ - you need EXACTLY the right amount of 2s!"
     },
 
     // Level 5 - Mixed Challenge (4x4)
@@ -76,9 +76,9 @@ const LEVELS = [
             [30, 33, 35, 36]
         ],
         primes: [2, 3, 5, 7, 11],
-        primeCounts: { 2: 16, 3: 11, 5: 6, 7: 5, 11: 4 },
+        primeCounts: { 2: 15, 3: 14, 5: 8, 7: 5, 11: 3 }, // Exact: 14,13,7,4,2
         optimalMoves: 18,
-        hint: "Prime 11 appears rarely - find where it's needed"
+        hint: "Only 2 uses of prime 11 - don't waste them!"
     },
 
     // Level 6 - Large Numbers (3x3)
@@ -91,9 +91,9 @@ const LEVELS = [
             [90, 100, 108]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 22, 3: 15, 5: 7 },
+        primeCounts: { 2: 22, 3: 15, 5: 6 }, // Exact: 21,14,5
         optimalMoves: 15,
-        hint: "Large numbers have many factors - be systematic"
+        hint: "Large numbers but tight limits - one wrong move and you're done!"
     },
 
     // Level 7 - Prime Diversity (4x4)
@@ -107,9 +107,9 @@ const LEVELS = [
             [91, 65, 78, 143]
         ],
         primes: [2, 3, 5, 7, 11, 13],
-        primeCounts: { 2: 10, 3: 7, 5: 5, 7: 6, 11: 5, 13: 5 },
+        primeCounts: { 2: 8, 3: 7, 5: 5, 7: 8, 11: 7, 13: 7 }, // Exact: 7,6,4,7,6,6
         optimalMoves: 22,
-        hint: "Each large prime may only be needed once - look for combinations"
+        hint: "Every prime counts - one mistake and you fail!"
     },
 
     // Level 8 - Squares (3x3)
@@ -122,9 +122,9 @@ const LEVELS = [
             [64, 81, 100]
         ],
         primes: [2, 3, 5, 7],
-        primeCounts: { 2: 18, 3: 10, 5: 6, 7: 4 },
+        primeCounts: { 2: 17, 3: 9, 5: 5, 7: 3 }, // Exact: 16,8,4,2
         optimalMoves: 16,
-        hint: "Perfect squares need their prime factors applied twice"
+        hint: "Squares = double the prime uses. Plan precisely!"
     },
 
     // Level 9 - Big Grid (5x5)
@@ -139,9 +139,9 @@ const LEVELS = [
             [33, 34, 35, 36, 38]
         ],
         primes: [2, 3, 5, 7, 11, 13, 17, 19],
-        primeCounts: { 2: 32, 3: 15, 5: 8, 7: 6, 11: 4, 13: 4, 17: 3, 19: 3 },
+        primeCounts: { 2: 35, 3: 17, 5: 8, 7: 5, 11: 3, 13: 2, 17: 2, 19: 2 }, // Exact: 34,16,7,4,2,1,1,1
         optimalMoves: 28,
-        hint: "Stay organized - tackle one prime at a time"
+        hint: "5x5 grid, minimal buffer - think before every move!"
     },
 
     // Level 10 - Expert (4x4)
@@ -155,9 +155,9 @@ const LEVELS = [
             [256, 9, 625, 361]
         ],
         primes: [2, 3, 5, 7, 11, 13, 19],
-        primeCounts: { 2: 35, 3: 15, 5: 8, 7: 4, 11: 4, 13: 4, 19: 4 },
+        primeCounts: { 2: 31, 3: 15, 5: 10, 7: 3, 11: 3, 13: 3, 19: 3 }, // Exact: 30,14,9,2,2,2,2
         optimalMoves: 35,
-        hint: "High powers require patience and planning"
+        hint: "128=2⁷, 256=2⁸, 625=5⁴ - extreme precision required!"
     },
 
     // Level 11 - The Gauntlet (5x5)
@@ -172,9 +172,9 @@ const LEVELS = [
             [132, 154, 144, 150, 156]
         ],
         primes: [2, 3, 5, 7, 11, 13],
-        primeCounts: { 2: 52, 3: 35, 5: 12, 7: 8, 11: 6, 13: 6 },
+        primeCounts: { 2: 49, 3: 33, 5: 9, 7: 5, 11: 5, 13: 4 }, // Exact: 48,32,8,4,4,3
         optimalMoves: 33,
-        hint: "All numbers are highly composite - find the pattern"
+        hint: "The Gauntlet - 25 numbers, razor-thin margins!"
     },
 
     // Level 12 - Prime Power (3x3)
@@ -187,9 +187,9 @@ const LEVELS = [
             [16, 125, 64]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 26, 3: 13, 5: 7 },
+        primeCounts: { 2: 23, 3: 13, 5: 8 }, // Exact: 22,12,7
         optimalMoves: 22,
-        hint: "Pure prime powers - count how many times each prime is needed"
+        hint: "Pure powers - count EXACTLY or lose!"
     },
 
     // Level 13 - Lucky 13 (4x4)
@@ -203,9 +203,9 @@ const LEVELS = [
             [182, 195, 208, 221]
         ],
         primes: [2, 3, 5, 7, 11, 13, 17, 19],
-        primeCounts: { 2: 14, 3: 8, 5: 6, 7: 5, 11: 4, 13: 12, 17: 4, 19: 4 },
+        primeCounts: { 2: 16, 3: 7, 5: 4, 7: 3, 11: 2, 13: 18, 17: 2, 19: 1 }, // Exact: 15,6,3,2,1,17,1,0 + special
         optimalMoves: 24,
-        hint: "Prime 13 is the key - it appears in many numbers"
+        hint: "Prime 13 appears 17 times - but only 1 buffer total!"
     },
 
     // Level 14 - Fibonacci Factors (3x3)
@@ -218,9 +218,9 @@ const LEVELS = [
             [221, 377, 595]
         ],
         primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29],
-        primeCounts: { 2: 8, 3: 5, 5: 4, 7: 4, 11: 3, 13: 3, 17: 4, 19: 3, 23: 3, 29: 3 },
+        primeCounts: { 2: 9, 3: 5, 5: 3, 7: 3, 11: 2, 13: 3, 17: 4, 19: 1, 23: 1, 29: 3 }, // Exact: 8,4,2,2,1,2,3,0,0,2 + tight
         optimalMoves: 15,
-        hint: "These numbers have unique prime factorizations"
+        hint: "Fibonacci = unique primes. ONE wrong selection = failure!"
     },
 
     // Level 15 - Master (5x5)
@@ -235,9 +235,9 @@ const LEVELS = [
             [1100, 1150, 1200, 1250, 1300]
         ],
         primes: [2, 3, 5, 7, 11, 13, 17, 19, 23],
-        primeCounts: { 2: 72, 3: 28, 5: 52, 7: 8, 11: 6, 13: 6, 17: 4, 19: 4, 23: 4 },
+        primeCounts: { 2: 49, 3: 11, 5: 57, 7: 4, 11: 3, 13: 3, 17: 2, 19: 2, 23: 2 }, // Exact: 48,10,56,3,2,2,1,1,1
         optimalMoves: 42,
-        hint: "Large numbers, many factors - this is the ultimate test"
+        hint: "The Ultimate Challenge - master level with zero room for error!"
     }
 ];
 
