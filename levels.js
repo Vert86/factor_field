@@ -96,13 +96,13 @@ const LEVELS = [
         size: 4,
         grid: [
             [14, 21, 22, 26],
-            [33, 35, 38, 39],
-            [46, 51, 55, 57],
-            [62, 65, 69, 74]
+            [33, 35, 77, 39],
+            [70, 42, 55, 66],
+            [91, 65, 78, 143]
         ],
         primes: [2, 3, 5, 7, 11, 13],
-        optimalMoves: 20,
-        hint: "Each large prime may only be needed once"
+        optimalMoves: 22,
+        hint: "Each large prime may only be needed once - look for combinations"
     },
 
     // Level 8 - Squares (3x3)
@@ -158,11 +158,11 @@ const LEVELS = [
             [12, 18, 24, 30, 36],
             [42, 48, 54, 60, 66],
             [72, 78, 84, 90, 96],
-            [102, 108, 114, 120, 126],
-            [132, 138, 144, 150, 156]
+            [110, 108, 130, 120, 126],
+            [132, 154, 144, 150, 156]
         ],
         primes: [2, 3, 5, 7, 11, 13],
-        optimalMoves: 32,
+        optimalMoves: 33,
         hint: "All numbers are highly composite - find the pattern"
     },
 
@@ -201,12 +201,12 @@ const LEVELS = [
         size: 3,
         grid: [
             [8, 21, 34],
-            [55, 89, 144],
-            [233, 377, 610]
+            [55, 87, 144],
+            [221, 377, 595]
         ],
         primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29],
-        optimalMoves: 18,
-        hint: "Fibonacci numbers have unique factorizations"
+        optimalMoves: 15,
+        hint: "These numbers have unique prime factorizations"
     },
 
     // Level 15 - Master (5x5)
