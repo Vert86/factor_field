@@ -86,7 +86,8 @@ class FactorFieldGame {
             button.dataset.prime = prime;
 
             const remaining = this.primeUsesRemaining[prime];
-            const isDisabled = remaining === 0;
+            const moveLimitReached = this.moves >= this.optimalMoves;
+            const isDisabled = remaining === 0 || moveLimitReached;
 
             // Show only prime number (NO use count)
             button.textContent = prime;
@@ -106,6 +107,11 @@ class FactorFieldGame {
     selectPrime(prime) {
         // Check if prime has uses remaining
         if (this.primeUsesRemaining[prime] === 0) {
+            return;
+        }
+
+        // Check if move limit reached
+        if (this.moves >= this.optimalMoves) {
             return;
         }
 
@@ -184,6 +190,15 @@ class FactorFieldGame {
         // Check if level is still completable
         const allOnes = this.grid.every(row => row.every(val => val === 1));
         if (allOnes) return; // Already won
+
+        // Check if move limit reached
+        if (this.moves >= this.optimalMoves) {
+            const hasNonOnes = this.grid.some(row => row.some(val => val !== 1));
+            if (hasNonOnes) {
+                this.handleLoss();
+                return;
+            }
+        }
 
         // Get all available primes (with uses remaining)
         const availablePrimes = this.primes.filter(p => this.primeUsesRemaining[p] > 0);
@@ -348,7 +363,7 @@ class FactorFieldGame {
 
     updateDisplay() {
         document.getElementById('level-display').textContent = this.currentLevel;
-        document.getElementById('moves-display').textContent = this.moves;
+        document.getElementById('moves-display').textContent = `${this.moves} / ${this.optimalMoves}`;
 
         const bestScore = this.bestScores[this.currentLevel];
         document.getElementById('best-display').textContent = bestScore || '-';

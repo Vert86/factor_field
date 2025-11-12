@@ -77,9 +77,9 @@
             <div class="modal-content loss-content">
                 <h2>Level Failed!</h2>
                 <div class="loss-stats">
-                    <p>❌ No more valid moves available</p>
+                    <p>❌ You've reached the move limit!</p>
                     <p>Moves Used: <span id="loss-moves"></span></p>
-                    <p class="loss-message">You ran out of prime uses before solving the puzzle. Plan your moves more carefully!</p>
+                    <p class="loss-message">You must solve the puzzle within the optimal move count. Calculate the exact sequence before clicking!</p>
                 </div>
                 <button id="retry-btn" class="btn btn-primary">Try Again</button>
             </div>
@@ -99,8 +99,9 @@
                 <ol class="tutorial-steps">
                     <li><strong>Select a Prime:</strong> Click any prime number button below the grid</li>
                     <li><strong>Division Happens:</strong> ALL tiles divisible by that prime are divided simultaneously</li>
+                    <li><strong>Move Limit:</strong> You can only make as many moves as the optimal solution</li>
                     <li><strong>Repeat:</strong> Keep selecting primes until all tiles show 1</li>
-                    <li><strong>Win:</strong> When every tile equals 1, you complete the level!</li>
+                    <li><strong>Win:</strong> When every tile equals 1 within the move limit, you complete the level!</li>
                 </ol>
             </div>
 
@@ -207,11 +208,11 @@
             <div class="tutorial-section">
                 <h3>💡 Pro Tips</h3>
                 <ul class="tips-list">
+                    <li><strong>Move Limit:</strong> You can only make as many moves as the optimal solution - no room for error!</li>
+                    <li><strong>Calculate first:</strong> Work out the entire sequence mentally BEFORE clicking any primes</li>
                     <li><strong>Look for patterns:</strong> Numbers like 8 (2³) need prime 2 applied three times</li>
-                    <li><strong>Plan ahead:</strong> Think about which primes each number needs before you start</li>
+                    <li><strong>Plan ahead:</strong> Every single move must be correct or you'll fail the level</li>
                     <li><strong>Use hints:</strong> Stuck? Click the Hint button for guidance</li>
-                    <li><strong>Watch your uses:</strong> Each prime has limited uses - don't waste them!</li>
-                    <li><strong>Optimal moves:</strong> Try to beat the optimal solution for a perfect score!</li>
                     <li><strong>Large primes:</strong> Primes like 7, 11, 13 usually only appear once in numbers</li>
                 </ul>
             </div>

@@ -16,7 +16,7 @@ const LEVELS = [
         primes: [2, 3, 5],
         primeCounts: { 2: 12, 3: 7, 5: 3 }, // EXACT - zero buffer!
         optimalMoves: 9,
-        hint: "Every click must be perfect - no room for error!"
+        hint: "You have exactly 9 moves - every click must be perfect!"
     },
 
     // Level 2 - Simple (3x3)
@@ -31,7 +31,7 @@ const LEVELS = [
         primes: [2, 3, 5],
         primeCounts: { 2: 10, 3: 7, 5: 5 }, // EXACT - one wrong move = fail
         optimalMoves: 10,
-        hint: "Calculate the exact sequence or fail!"
+        hint: "Only 10 moves allowed - calculate first, click second!"
     },
 
     // Level 3 - Balanced (4x4)
@@ -47,7 +47,7 @@ const LEVELS = [
         primes: [2, 3, 5, 7],
         primeCounts: { 2: 22, 3: 12, 5: 5, 7: 3 }, // EXACT amounts only
         optimalMoves: 20,
-        hint: "Find the ONE perfect sequence!"
+        hint: "20 moves max - find the ONE perfect sequence!"
     },
 
     // Level 4 - Powers of 2 (3x3)
