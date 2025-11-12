@@ -9,10 +9,13 @@ class FactorFieldGame {
         this.moves = 0;
         this.grid = [];
         this.primes = [];
+        this.primeCounts = {};
+        this.primeUsesRemaining = {};
         this.size = 0;
         this.optimalMoves = 0;
         this.bestScores = this.loadBestScores();
         this.soundEnabled = true;
+        this.levelFailed = false;
 
         this.init();
     }
@@ -29,8 +32,16 @@ class FactorFieldGame {
         this.currentLevel = levelId;
         this.size = level.size;
         this.primes = level.primes;
+        this.primeCounts = level.primeCounts || {};
         this.optimalMoves = level.optimalMoves;
         this.moves = 0;
+        this.levelFailed = false;
+
+        // Initialize remaining uses for each prime
+        this.primeUsesRemaining = {};
+        this.primes.forEach(prime => {
+            this.primeUsesRemaining[prime] = this.primeCounts[prime] || Infinity;
+        });
 
         // Deep copy the grid
         this.grid = level.grid.map(row => [...row]);
@@ -67,30 +78,75 @@ class FactorFieldGame {
         container.innerHTML = '';
 
         this.primes.forEach(prime => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'prime-btn-wrapper';
+
             const button = document.createElement('button');
             button.className = 'prime-btn';
-            button.textContent = prime;
             button.dataset.prime = prime;
-            button.addEventListener('click', () => this.selectPrime(prime));
-            container.appendChild(button);
+
+            const remaining = this.primeUsesRemaining[prime];
+            const isDisabled = remaining === 0;
+
+            // Show prime number
+            const primeNum = document.createElement('span');
+            primeNum.className = 'prime-number';
+            primeNum.textContent = prime;
+            button.appendChild(primeNum);
+
+            // Show remaining uses
+            if (remaining !== Infinity) {
+                const usesLabel = document.createElement('span');
+                usesLabel.className = 'prime-uses';
+                usesLabel.textContent = `×${remaining}`;
+                button.appendChild(usesLabel);
+            }
+
+            if (isDisabled) {
+                button.classList.add('disabled');
+                button.disabled = true;
+            } else {
+                button.addEventListener('click', () => this.selectPrime(prime));
+            }
+
+            wrapper.appendChild(button);
+            container.appendChild(wrapper);
         });
     }
 
     selectPrime(prime) {
+        // Check if prime has uses remaining
+        if (this.primeUsesRemaining[prime] === 0) {
+            return;
+        }
+
         // Animate button
         const button = document.querySelector(`[data-prime="${prime}"]`);
         button.classList.add('selected');
         setTimeout(() => button.classList.remove('selected'), 600);
 
+        // Decrement uses
+        if (this.primeUsesRemaining[prime] !== Infinity) {
+            this.primeUsesRemaining[prime]--;
+        }
+
         // Apply division
         this.applyPrimeDivision(prime);
         this.moves++;
 
+        // Re-render prime buttons to show updated counts
+        setTimeout(() => this.renderPrimeButtons(), 300);
+
         // Update display
         this.updateDisplay();
 
-        // Check win condition
-        setTimeout(() => this.checkWin(), 600);
+        // Check win/loss conditions
+        setTimeout(() => {
+            this.checkWin();
+            if (!this.levelFailed) {
+                this.checkLoss();
+            }
+        }, 600);
 
         // Play sound
         this.playSound('divide');
@@ -132,6 +188,47 @@ class FactorFieldGame {
 
         if (allOnes) {
             this.handleWin();
+        }
+    }
+
+    checkLoss() {
+        // Check if level is still completable
+        const allOnes = this.grid.every(row => row.every(val => val === 1));
+        if (allOnes) return; // Already won
+
+        // Get all available primes (with uses remaining)
+        const availablePrimes = this.primes.filter(p => this.primeUsesRemaining[p] > 0);
+
+        if (availablePrimes.length === 0) {
+            // No primes left, check if we can still win
+            const hasNonOnes = this.grid.some(row => row.some(val => val !== 1));
+            if (hasNonOnes) {
+                this.handleLoss();
+                return;
+            }
+        }
+
+        // Check if any remaining tile can be divided by available primes
+        let canMakeProgress = false;
+        for (let row = 0; row < this.size; row++) {
+            for (let col = 0; col < this.size; col++) {
+                const value = this.grid[row][col];
+                if (value !== 1) {
+                    // Check if this tile can be divided by any available prime
+                    for (const prime of availablePrimes) {
+                        if (value % prime === 0) {
+                            canMakeProgress = true;
+                            break;
+                        }
+                    }
+                }
+                if (canMakeProgress) break;
+            }
+            if (canMakeProgress) break;
+        }
+
+        if (!canMakeProgress) {
+            this.handleLoss();
         }
     }
 
@@ -187,6 +284,35 @@ class FactorFieldGame {
 
     hideWinModal() {
         const modal = document.getElementById('win-modal');
+        modal.classList.add('hidden');
+    }
+
+    handleLoss() {
+        this.levelFailed = true;
+
+        // Show failure animation
+        const board = document.getElementById('game-board');
+        board.classList.add('failure-shake');
+        setTimeout(() => board.classList.remove('failure-shake'), 800);
+
+        // Play failure sound
+        this.playSound('fail');
+
+        // Show modal after animation
+        setTimeout(() => this.showLossModal(), 800);
+    }
+
+    showLossModal() {
+        const modal = document.getElementById('loss-modal');
+        const movesUsed = document.getElementById('loss-moves');
+
+        movesUsed.textContent = this.moves;
+
+        modal.classList.remove('hidden');
+    }
+
+    hideLossModal() {
+        const modal = document.getElementById('loss-modal');
         modal.classList.add('hidden');
     }
 
@@ -285,6 +411,23 @@ class FactorFieldGame {
                     osc.start(audioContext.currentTime + i * 0.15);
                     osc.stop(audioContext.currentTime + i * 0.15 + 0.3);
                 });
+            } else if (type === 'fail') {
+                // Failure sound - descending notes
+                const notes = [400, 300, 200]; // Descending
+                notes.forEach((freq, i) => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+
+                    osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.1);
+                    gain.gain.setValueAtTime(0.15, audioContext.currentTime + i * 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.1 + 0.2);
+
+                    osc.start(audioContext.currentTime + i * 0.1);
+                    osc.stop(audioContext.currentTime + i * 0.1 + 0.2);
+                });
             }
         } catch (e) {
             // Audio not supported, fail silently
@@ -311,6 +454,12 @@ class FactorFieldGame {
         document.getElementById('replay-btn').addEventListener('click', () => {
             this.resetLevel();
             this.hideWinModal();
+        });
+
+        // Loss modal - Retry button
+        document.getElementById('retry-btn').addEventListener('click', () => {
+            this.resetLevel();
+            this.hideLossModal();
         });
 
         // Keyboard shortcuts
@@ -349,4 +498,63 @@ document.addEventListener('contextmenu', (e) => {
     if (e.target.classList.contains('tile') || e.target.classList.contains('prime-btn')) {
         e.preventDefault();
     }
+});
+
+// Tutorial step-through navigation
+document.addEventListener('DOMContentLoaded', () => {
+    const exampleBoard = document.getElementById('example-board');
+    const steps = exampleBoard ? exampleBoard.querySelectorAll('.example-step') : [];
+    const stepCounter = document.getElementById('step-counter');
+    const prevBtn = document.getElementById('prev-step-btn');
+    const nextBtn = document.getElementById('next-step-btn');
+
+    if (steps.length === 0) return;
+
+    let currentStep = 0;
+    const totalSteps = steps.length;
+
+    function updateTutorial() {
+        // Hide all steps
+        steps.forEach((step, index) => {
+            step.style.display = index === currentStep ? 'block' : 'none';
+        });
+
+        // Update counter
+        if (stepCounter) {
+            stepCounter.textContent = `Step ${currentStep + 1} of ${totalSteps}`;
+        }
+
+        // Update button states
+        if (prevBtn) {
+            prevBtn.disabled = currentStep === 0;
+            prevBtn.style.opacity = currentStep === 0 ? '0.5' : '1';
+        }
+
+        if (nextBtn) {
+            nextBtn.disabled = currentStep === totalSteps - 1;
+            nextBtn.style.opacity = currentStep === totalSteps - 1 ? '0.5' : '1';
+        }
+    }
+
+    // Event listeners
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                updateTutorial();
+            }
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < totalSteps - 1) {
+                currentStep++;
+                updateTutorial();
+            }
+        });
+    }
+
+    // Initialize
+    updateTutorial();
 });

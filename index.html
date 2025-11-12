@@ -72,6 +72,19 @@
             </div>
         </div>
 
+        <!-- Loss Modal -->
+        <div id="loss-modal" class="modal hidden">
+            <div class="modal-content loss-content">
+                <h2>Level Failed!</h2>
+                <div class="loss-stats">
+                    <p>❌ No more valid moves available</p>
+                    <p>Moves Used: <span id="loss-moves"></span></p>
+                    <p class="loss-message">You ran out of prime uses before solving the puzzle. Plan your moves more carefully!</p>
+                </div>
+                <button id="retry-btn" class="btn btn-primary">Try Again</button>
+            </div>
+        </div>
+
         <!-- How To Play Guide -->
         <div class="how-to-play">
             <h2>How To Play</h2>
@@ -95,7 +108,11 @@
                 <h3>📚 Step-by-Step Example</h3>
                 <p>Let's clear a simple 2x2 grid together:</p>
 
-                <div class="example-board">
+                <div class="tutorial-navigation">
+                    <div class="step-counter" id="step-counter">Step 1 of 6</div>
+                </div>
+
+                <div class="example-board" id="example-board">
                     <div class="example-step">
                         <div class="step-header">
                             <span class="step-number">Start</span>
@@ -180,6 +197,11 @@
                         <p class="step-explanation">5÷5=1, 5÷5=1<br>🎉 Level Complete!</p>
                     </div>
                 </div>
+
+                <div class="tutorial-controls">
+                    <button id="prev-step-btn" class="btn btn-secondary tutorial-nav-btn">← Previous</button>
+                    <button id="next-step-btn" class="btn btn-primary tutorial-nav-btn">Next →</button>
+                </div>
             </div>
 
             <div class="tutorial-section">
@@ -188,20 +210,10 @@
                     <li><strong>Look for patterns:</strong> Numbers like 8 (2³) need prime 2 applied three times</li>
                     <li><strong>Plan ahead:</strong> Think about which primes each number needs before you start</li>
                     <li><strong>Use hints:</strong> Stuck? Click the Hint button for guidance</li>
-                    <li><strong>Keyboard shortcuts:</strong> Press number keys (2, 3, 5...) to quickly select primes</li>
+                    <li><strong>Watch your uses:</strong> Each prime has limited uses - don't waste them!</li>
                     <li><strong>Optimal moves:</strong> Try to beat the optimal solution for a perfect score!</li>
                     <li><strong>Large primes:</strong> Primes like 7, 11, 13 usually only appear once in numbers</li>
                 </ul>
-            </div>
-
-            <div class="tutorial-section">
-                <h3>⌨️ Keyboard Controls</h3>
-                <div class="keyboard-guide">
-                    <div class="key-binding"><kbd>2</kbd><kbd>3</kbd><kbd>5</kbd><kbd>7</kbd> Select prime numbers</div>
-                    <div class="key-binding"><kbd>R</kbd> Reset current level</div>
-                    <div class="key-binding"><kbd>H</kbd> Show hint</div>
-                    <div class="key-binding"><kbd>N</kbd> Next level (after winning)</div>
-                </div>
             </div>
 
             <div class="tutorial-section ready-section">

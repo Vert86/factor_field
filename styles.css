@@ -160,6 +160,10 @@ body {
     flex-wrap: wrap;
 }
 
+.prime-btn-wrapper {
+    position: relative;
+}
+
 .prime-btn {
     width: 80px;
     height: 80px;
@@ -173,6 +177,22 @@ body {
     transition: all 0.2s ease;
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.prime-btn .prime-number {
+    font-size: 1.8em;
+    line-height: 1;
+}
+
+.prime-btn .prime-uses {
+    font-size: 0.6em;
+    margin-top: 2px;
+    color: #666;
+    font-weight: 600;
 }
 
 .prime-btn:hover {
@@ -187,6 +207,18 @@ body {
 .prime-btn.selected {
     animation: pulse 0.6s ease;
     background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+}
+
+.prime-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: linear-gradient(135deg, #888 0%, #666 100%);
+    border-color: #555;
+}
+
+.prime-btn.disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
 }
 
 @keyframes pulse {
@@ -305,6 +337,46 @@ body {
     margin: 10px 5px;
 }
 
+/* Loss Modal */
+.loss-content h2 {
+    background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.loss-stats {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 68, 68, 0.1);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 68, 68, 0.3);
+}
+
+.loss-stats p {
+    font-size: 1.1em;
+    margin: 10px 0;
+    color: #ffcccc;
+}
+
+.loss-message {
+    font-size: 0.95em !important;
+    color: #aaa !important;
+    font-style: italic;
+    margin-top: 15px !important;
+}
+
+/* Failure Animation */
+.failure-shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
 /* How To Play Guide */
 .how-to-play {
     margin-top: 50px;
@@ -379,25 +451,50 @@ body {
     font-size: 1.2em;
 }
 
+/* Tutorial Navigation */
+.tutorial-navigation {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.step-counter {
+    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(255, 215, 0, 0.2);
+    border-radius: 20px;
+    color: #FFD700;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.tutorial-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.tutorial-nav-btn {
+    min-width: 120px;
+}
+
 /* Example Board Walkthrough */
 .example-board {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
     margin-top: 20px;
 }
 
 .example-step {
     background: rgba(0, 0, 0, 0.3);
-    padding: 15px;
+    padding: 25px;
     border-radius: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.2s ease;
-}
-
-.example-step:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255, 215, 0, 0.4);
+    border: 2px solid rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 400px;
 }
 
 .step-header {
