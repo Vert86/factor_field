@@ -14,9 +14,9 @@ const LEVELS = [
             [15, 18, 20]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 12, 3: 7, 5: 3 }, // EXACT - zero buffer!
-        optimalMoves: 9,
-        hint: "You have exactly 9 moves - every click must be perfect!"
+        primeCounts: { 2: 3, 3: 2, 5: 1 },
+        optimalMoves: 6,
+        hint: "You have exactly 6 moves - every click must be perfect!"
     },
 
     // Level 2 - Simple (3x3)
@@ -29,9 +29,9 @@ const LEVELS = [
             [9, 18, 25]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 10, 3: 7, 5: 5 }, // EXACT - one wrong move = fail
-        optimalMoves: 10,
-        hint: "Only 10 moves allowed - calculate first, click second!"
+        primeCounts: { 2: 3, 3: 2, 5: 2 },
+        optimalMoves: 7,
+        hint: "Only 7 moves allowed - calculate first, click second!"
     },
 
     // Level 3 - Balanced (4x4)
@@ -45,9 +45,9 @@ const LEVELS = [
             [28, 24, 25, 27]
         ],
         primes: [2, 3, 5, 7],
-        primeCounts: { 2: 22, 3: 12, 5: 5, 7: 3 }, // EXACT amounts only
-        optimalMoves: 20,
-        hint: "20 moves max - find the ONE perfect sequence!"
+        primeCounts: { 2: 4, 3: 3, 5: 2, 7: 1 },
+        optimalMoves: 10,
+        hint: "10 moves max - find the ONE perfect sequence!"
     },
 
     // Level 4 - Powers of 2 (3x3)
@@ -60,8 +60,8 @@ const LEVELS = [
             [6, 18, 24]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 23, 3: 5, 5: 1 }, // EXACT - waste prime 5 once = lose
-        optimalMoves: 12,
+        primeCounts: { 2: 5, 3: 2, 5: 1 },
+        optimalMoves: 8,
         hint: "Prime 5 appears ONCE - use it correctly!"
     },
 
@@ -76,9 +76,9 @@ const LEVELS = [
             [30, 33, 35, 36]
         ],
         primes: [2, 3, 5, 7, 11],
-        primeCounts: { 2: 14, 3: 13, 5: 7, 7: 4, 11: 2 }, // EXACT - no extras
-        optimalMoves: 18,
-        hint: "Two uses of 11 - both must be perfect!"
+        primeCounts: { 2: 2, 3: 3, 5: 2, 7: 1, 11: 1 },
+        optimalMoves: 9,
+        hint: "Prime 11 appears ONCE - use it correctly!"
     },
 
     // Level 6 - Large Numbers (3x3)
@@ -91,8 +91,8 @@ const LEVELS = [
             [90, 100, 108]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 21, 3: 14, 5: 5 }, // EXACT needs
-        optimalMoves: 15,
+        primeCounts: { 2: 4, 3: 3, 5: 2 },
+        optimalMoves: 9,
         hint: "Random clicking guarantees failure!"
     },
 
@@ -107,8 +107,8 @@ const LEVELS = [
             [91, 65, 78, 143]
         ],
         primes: [2, 3, 5, 7, 11, 13],
-        primeCounts: { 2: 7, 3: 6, 5: 4, 7: 7, 11: 6, 13: 6 }, // EXACT - no buffer
-        optimalMoves: 22,
+        primeCounts: { 2: 1, 3: 1, 5: 1, 7: 1, 11: 1, 13: 1 },
+        optimalMoves: 6,
         hint: "Perfect execution required!"
     },
 
@@ -122,8 +122,8 @@ const LEVELS = [
             [64, 81, 100]
         ],
         primes: [2, 3, 5, 7],
-        primeCounts: { 2: 16, 3: 8, 5: 4, 7: 2 }, // EXACT needs
-        optimalMoves: 16,
+        primeCounts: { 2: 6, 3: 4, 5: 2, 7: 2 },
+        optimalMoves: 14,
         hint: "Squares are unforgiving!"
     },
 
@@ -139,8 +139,8 @@ const LEVELS = [
             [33, 34, 35, 36, 38]
         ],
         primes: [2, 3, 5, 7, 11, 13, 17, 19],
-        primeCounts: { 2: 34, 3: 16, 5: 7, 7: 4, 11: 2, 13: 1, 17: 1, 19: 1 }, // EXACT
-        optimalMoves: 28,
+        primeCounts: { 2: 5, 3: 3, 5: 2, 7: 1, 11: 1, 13: 1, 17: 1, 19: 1 },
+        optimalMoves: 15,
         hint: "25 tiles, zero mistakes allowed!"
     },
 
@@ -155,8 +155,8 @@ const LEVELS = [
             [256, 9, 625, 361]
         ],
         primes: [2, 3, 5, 7, 11, 13, 19],
-        primeCounts: { 2: 30, 3: 14, 5: 9, 7: 2, 11: 2, 13: 2, 19: 2 }, // EXACT
-        optimalMoves: 35,
+        primeCounts: { 2: 8, 3: 5, 5: 4, 7: 2, 11: 2, 13: 2, 19: 2 },
+        optimalMoves: 25,
         hint: "Ultra-high powers = zero tolerance!"
     },
 
@@ -172,8 +172,8 @@ const LEVELS = [
             [132, 154, 144, 150, 156]
         ],
         primes: [2, 3, 5, 7, 11, 13],
-        primeCounts: { 2: 48, 3: 32, 5: 8, 7: 4, 11: 4, 13: 3 }, // EXACT
-        optimalMoves: 33,
+        primeCounts: { 2: 5, 3: 3, 5: 2, 7: 1, 11: 1, 13: 1 },
+        optimalMoves: 13,
         hint: "The Gauntlet - pure perfection required!"
     },
 
@@ -187,8 +187,8 @@ const LEVELS = [
             [16, 125, 64]
         ],
         primes: [2, 3, 5],
-        primeCounts: { 2: 22, 3: 12, 5: 7 }, // EXACT
-        optimalMoves: 22,
+        primeCounts: { 2: 7, 3: 5, 5: 4 },
+        optimalMoves: 16,
         hint: "Pure powers demand perfection!"
     },
 
@@ -203,8 +203,8 @@ const LEVELS = [
             [182, 195, 208, 221]
         ],
         primes: [2, 3, 5, 7, 11, 13, 17, 19],
-        primeCounts: { 2: 15, 3: 6, 5: 3, 7: 2, 11: 1, 13: 17, 17: 1, 19: 0 }, // EXACT (19 not needed!)
-        optimalMoves: 24,
+        primeCounts: { 2: 4, 3: 2, 5: 1, 7: 1, 11: 1, 13: 2, 17: 1, 19: 0 },
+        optimalMoves: 12,
         hint: "Prime 19 is a trap - never use it!"
     },
 
@@ -218,8 +218,8 @@ const LEVELS = [
             [221, 377, 595]
         ],
         primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29],
-        primeCounts: { 2: 8, 3: 4, 5: 2, 7: 2, 11: 1, 13: 2, 17: 3, 19: 0, 23: 0, 29: 2 }, // EXACT
-        optimalMoves: 15,
+        primeCounts: { 2: 4, 3: 2, 5: 1, 7: 1, 11: 1, 13: 1, 17: 1, 19: 0, 23: 0, 29: 1 },
+        optimalMoves: 12,
         hint: "Some primes are traps - figure out which!"
     },
 
@@ -235,8 +235,8 @@ const LEVELS = [
             [1100, 1150, 1200, 1250, 1300]
         ],
         primes: [2, 3, 5, 7, 11, 13, 17, 19, 23],
-        primeCounts: { 2: 48, 3: 10, 5: 56, 7: 3, 11: 2, 13: 2, 17: 1, 19: 1, 23: 1 }, // EXACT
-        optimalMoves: 42,
+        primeCounts: { 2: 5, 3: 2, 5: 4, 7: 1, 11: 1, 13: 1, 17: 1, 19: 1, 23: 1 },
+        optimalMoves: 17,
         hint: "The ultimate test - absolute perfection!"
     }
 ];

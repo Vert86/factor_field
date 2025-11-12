@@ -263,16 +263,9 @@ class FactorFieldGame {
 
         finalMoves.textContent = this.moves;
 
-        if (this.moves === this.optimalMoves) {
-            optimalMessage.textContent = '🏆 Perfect! Optimal solution!';
-            optimalMessage.style.color = '#FFD700';
-        } else if (this.moves <= this.optimalMoves + 2) {
-            optimalMessage.textContent = '⭐ Excellent! Very close to optimal!';
-            optimalMessage.style.color = '#4CAF50';
-        } else {
-            optimalMessage.textContent = `Optimal moves: ${this.optimalMoves}. Try to improve!`;
-            optimalMessage.style.color = '#888';
-        }
+        // If they won, they used exactly optimal moves (due to move limit)
+        optimalMessage.textContent = '🏆 Perfect! Optimal solution!';
+        optimalMessage.style.color = '#FFD700';
 
         modal.classList.remove('hidden');
 
