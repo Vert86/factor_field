@@ -88,19 +88,8 @@ class FactorFieldGame {
             const remaining = this.primeUsesRemaining[prime];
             const isDisabled = remaining === 0;
 
-            // Show prime number
-            const primeNum = document.createElement('span');
-            primeNum.className = 'prime-number';
-            primeNum.textContent = prime;
-            button.appendChild(primeNum);
-
-            // Show remaining uses
-            if (remaining !== Infinity) {
-                const usesLabel = document.createElement('span');
-                usesLabel.className = 'prime-uses';
-                usesLabel.textContent = `×${remaining}`;
-                button.appendChild(usesLabel);
-            }
+            // Show only prime number (NO use count)
+            button.textContent = prime;
 
             if (isDisabled) {
                 button.classList.add('disabled');
