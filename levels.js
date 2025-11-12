@@ -40,11 +40,11 @@ const LEVELS = [
             [4, 6, 8, 10],
             [9, 12, 14, 15],
             [16, 18, 20, 21],
-            [22, 24, 25, 27]
+            [28, 24, 25, 27]
         ],
         primes: [2, 3, 5, 7],
-        optimalMoves: 16,
-        hint: "Use prime 7 wisely - it only appears once in factors"
+        optimalMoves: 20,
+        hint: "Use prime 7 wisely - it appears in 14, 21, and 28"
     },
 
     // Level 4 - Powers of 2 (3x3)
