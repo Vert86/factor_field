@@ -17,6 +17,12 @@ class FactorFieldGame {
         this.soundEnabled = true;
         this.levelFailed = false;
 
+        // Power-up system
+        this.powerUps = this.loadPowerUps();
+        this.activePowerUp = null;
+        this.lastMove = null; // For rewind functionality
+        this.lastMoveData = null;
+
         this.init();
     }
 
@@ -24,6 +30,7 @@ class FactorFieldGame {
         this.loadLevel(this.currentLevel);
         this.setupEventListeners();
         this.updateDisplay();
+        this.renderPowerUps();
     }
 
     loadLevel(levelId) {
@@ -117,6 +124,13 @@ class FactorFieldGame {
             this.handleLoss();
             return;
         }
+
+        // Save state for rewind power-up
+        this.lastMoveData = {
+            grid: this.grid.map(row => [...row]),
+            primeUsesRemaining: {...this.primeUsesRemaining},
+            moves: this.moves
+        };
 
         // Animate button
         const button = document.querySelector(`[data-prime="${prime}"]`);
@@ -247,6 +261,10 @@ class FactorFieldGame {
             this.saveBestScores();
         }
 
+        // Award power-up for completing level
+        const reward = this.getLevelReward(this.currentLevel);
+        this.addPowerUp(reward, 1);
+
         // Show victory animation
         const board = document.getElementById('game-board');
         board.classList.add('victory-celebration');
@@ -255,8 +273,8 @@ class FactorFieldGame {
         // Play win sound
         this.playSound('win');
 
-        // Show modal after animation
-        setTimeout(() => this.showWinModal(), 800);
+        // Show reward modal first, then win modal
+        setTimeout(() => this.showRewardModal(reward), 800);
     }
 
     showWinModal() {
@@ -374,6 +392,227 @@ class FactorFieldGame {
         localStorage.setItem('factorFieldBestScores', JSON.stringify(this.bestScores));
     }
 
+    // Power-Up System
+    loadPowerUps() {
+        const stored = localStorage.getItem('factorFieldPowerUps');
+        return stored ? JSON.parse(stored) : {
+            primePeek: 0,
+            rewind: 0,
+            calculator: 0
+        };
+    }
+
+    savePowerUps() {
+        localStorage.setItem('factorFieldPowerUps', JSON.stringify(this.powerUps));
+    }
+
+    addPowerUp(type, count = 1) {
+        this.powerUps[type] += count;
+        this.savePowerUps();
+        this.renderPowerUps();
+    }
+
+    usePowerUp(type) {
+        if (this.powerUps[type] <= 0) return false;
+
+        this.powerUps[type]--;
+        this.savePowerUps();
+        this.renderPowerUps();
+        return true;
+    }
+
+    renderPowerUps() {
+        const container = document.getElementById('powerups-container');
+        container.innerHTML = '';
+
+        const powerUpTypes = [
+            {
+                id: 'primePeek',
+                name: 'Prime Peek',
+                icon: '🔮',
+                description: 'Reveals count for one prime (10sec)'
+            },
+            {
+                id: 'rewind',
+                name: 'Rewind',
+                icon: '⏪',
+                description: 'Undo your last move'
+            },
+            {
+                id: 'calculator',
+                name: 'Calculator',
+                icon: '🧮',
+                description: 'Shows factorization of one tile'
+            }
+        ];
+
+        powerUpTypes.forEach(powerUp => {
+            const item = document.createElement('div');
+            item.className = 'powerup-item';
+            if (this.powerUps[powerUp.id] === 0) {
+                item.classList.add('powerup-disabled');
+            }
+
+            item.innerHTML = `
+                <div class="powerup-icon">${powerUp.icon}</div>
+                <div class="powerup-name">${powerUp.name}</div>
+                ${this.powerUps[powerUp.id] > 0 ? `<div class="powerup-count">${this.powerUps[powerUp.id]}</div>` : ''}
+            `;
+
+            if (this.powerUps[powerUp.id] > 0) {
+                item.title = powerUp.description;
+                item.addEventListener('click', () => this.activatePowerUp(powerUp.id));
+            }
+
+            container.appendChild(item);
+        });
+    }
+
+    activatePowerUp(type) {
+        if (this.levelFailed) return;
+
+        switch(type) {
+            case 'primePeek':
+                if (this.usePowerUp('primePeek')) {
+                    this.activatePrimePeek();
+                }
+                break;
+            case 'rewind':
+                if (this.usePowerUp('rewind')) {
+                    this.activateRewind();
+                }
+                break;
+            case 'calculator':
+                if (this.usePowerUp('calculator')) {
+                    this.activateCalculator();
+                }
+                break;
+        }
+    }
+
+    activatePrimePeek() {
+        alert('Click a prime button to reveal its usage count!');
+        this.activePowerUp = 'primePeek';
+
+        // Temporarily show counts on prime buttons
+        const buttons = document.querySelectorAll('.prime-btn');
+        buttons.forEach(btn => {
+            const prime = parseInt(btn.dataset.prime);
+            const remaining = this.primeUsesRemaining[prime];
+            btn.setAttribute('data-original-text', btn.textContent);
+            btn.textContent = `${prime} (×${remaining})`;
+            btn.classList.add('powerup-active');
+        });
+
+        // Remove after 10 seconds
+        setTimeout(() => {
+            buttons.forEach(btn => {
+                const originalText = btn.getAttribute('data-original-text');
+                if (originalText) {
+                    btn.textContent = originalText;
+                    btn.removeAttribute('data-original-text');
+                    btn.classList.remove('powerup-active');
+                }
+            });
+            this.activePowerUp = null;
+        }, 10000);
+    }
+
+    activateRewind() {
+        if (!this.lastMoveData) {
+            alert('No moves to undo!');
+            this.powerUps.rewind++; // Give it back
+            this.savePowerUps();
+            this.renderPowerUps();
+            return;
+        }
+
+        // Restore previous state
+        this.grid = this.lastMoveData.grid.map(row => [...row]);
+        this.primeUsesRemaining = {...this.lastMoveData.primeUsesRemaining};
+        this.moves = this.lastMoveData.moves;
+        this.lastMoveData = null;
+
+        // Re-render
+        this.renderBoard();
+        this.renderPrimeButtons();
+        this.updateDisplay();
+
+        // Play sound
+        this.playSound('divide');
+    }
+
+    activateCalculator() {
+        alert('Click a tile to see its prime factorization!');
+        this.activePowerUp = 'calculator';
+
+        // Add click listener to tiles
+        const tiles = document.querySelectorAll('.tile');
+        const clickHandler = (e) => {
+            const row = parseInt(e.target.dataset.row);
+            const col = parseInt(e.target.dataset.col);
+            const value = this.grid[row][col];
+
+            if (value === 1) {
+                alert('This tile is already 1!');
+            } else {
+                const factorization = this.getPrimeFactorization(value);
+                alert(`${value} = ${factorization}`);
+            }
+
+            // Remove listeners
+            tiles.forEach(t => t.removeEventListener('click', clickHandler));
+            this.activePowerUp = null;
+        };
+
+        tiles.forEach(tile => tile.addEventListener('click', clickHandler));
+    }
+
+    getPrimeFactorization(n) {
+        const factors = [];
+        for (let prime of this.primes) {
+            while (n % prime === 0) {
+                factors.push(prime);
+                n /= prime;
+            }
+        }
+        return factors.length > 0 ? factors.join(' × ') : n.toString();
+    }
+
+    showRewardModal(powerUpType) {
+        const powerUpData = {
+            primePeek: { icon: '🔮', name: 'Prime Peek', description: 'Reveals the usage count for one prime number of your choice!' },
+            rewind: { icon: '⏪', name: 'Rewind', description: 'Undo your last move and try a different approach!' },
+            calculator: { icon: '🧮', name: 'Calculator', description: 'Shows the prime factorization of any tile!' }
+        };
+
+        const data = powerUpData[powerUpType];
+        document.getElementById('reward-icon').textContent = data.icon;
+        document.getElementById('reward-text').textContent = data.name;
+        document.getElementById('reward-description').textContent = data.description;
+
+        const modal = document.getElementById('reward-modal');
+        modal.classList.remove('hidden');
+
+        // Play win sound
+        this.playSound('win');
+    }
+
+    hideRewardModal() {
+        const modal = document.getElementById('reward-modal');
+        modal.classList.add('hidden');
+    }
+
+    getLevelReward(levelId) {
+        // Different levels give different rewards
+        const rewards = [
+            'primePeek', 'rewind', 'calculator', 'primePeek', 'rewind',
+            'calculator', 'primePeek', 'rewind', 'calculator', 'primePeek',
+            'rewind', 'calculator', 'primePeek', 'rewind', 'calculator'
+        ];
+        return rewards[(levelId - 1) % rewards.length];
+    }
+
     playSound(type) {
         if (!this.soundEnabled) return;
 
@@ -460,6 +699,12 @@ class FactorFieldGame {
         document.getElementById('retry-btn').addEventListener('click', () => {
             this.resetLevel();
             this.hideLossModal();
+        });
+
+        // Reward modal - Claim button
+        document.getElementById('claim-reward-btn').addEventListener('click', () => {
+            this.hideRewardModal();
+            this.showWinModal();
         });
 
         // Keyboard shortcuts
