@@ -8,14 +8,16 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    background-attachment: fixed;
     color: #ffffff;
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: 20px;
     position: relative;
-    overflow: hidden;
+    /* Enable scrolling for mobile and "How to Play" section */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 /* Animated Background */
@@ -109,6 +111,17 @@ body::before {
     width: 100%;
     position: relative;
     z-index: 1;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+/* Mobile Touch Support */
+@media (hover: none) and (pointer: coarse) {
+    /* This is a touch device */
+    .prime-btn, .btn, .tile {
+        -webkit-tap-highlight-color: rgba(255, 215, 0, 0.3);
+        touch-action: manipulation; /* Prevents double-tap zoom */
+    }
 }
 
 /* Header */
@@ -835,27 +848,103 @@ body::before {
 
 /* Responsive Design */
 @media (max-width: 600px) {
+    body {
+        padding: 10px;
+        padding-top: max(10px, env(safe-area-inset-top)); /* iOS notch support */
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
+
+    .game-container {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
     .game-header h1 {
         font-size: 2em;
     }
 
-    .tile {
-        font-size: 1.5em;
+    .game-info {
+        gap: 10px;
+        margin-bottom: 15px;
     }
 
-    .prime-btn {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5em;
+    .info-item {
+        padding: 8px 12px;
     }
 
     .info-item .value {
+        font-size: 1.2em;
+    }
+
+    /* Power-ups on mobile */
+    .powerups-container {
+        gap: 8px;
+        padding: 10px;
+        margin: 15px 0;
+    }
+
+    .powerup-item {
+        min-width: 70px;
+        padding: 8px;
+    }
+
+    .powerup-icon {
+        font-size: 1.5em;
+    }
+
+    .powerup-name {
+        font-size: 0.65em;
+    }
+
+    .powerup-count {
+        width: 20px;
+        height: 20px;
+        font-size: 0.75em;
+    }
+
+    /* Game board */
+    .game-board {
+        gap: 6px;
+        margin-bottom: 15px;
+    }
+
+    .tile {
+        font-size: 1.3em;
+        min-height: 50px;
+    }
+
+    /* Prime buttons */
+    .prime-palette {
+        margin-bottom: 15px;
+    }
+
+    .prime-palette h3 {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+
+    .prime-buttons {
+        gap: 8px;
+    }
+
+    .prime-btn {
+        width: 55px;
+        height: 55px;
         font-size: 1.4em;
     }
 
+    /* Controls */
+    .controls {
+        gap: 10px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+
     .btn {
-        padding: 10px 20px;
-        font-size: 0.9em;
+        padding: 10px 18px;
+        font-size: 0.85em;
+        flex: 1 1 auto;
+        min-width: 120px;
     }
 
     /* Tutorial Responsive */
@@ -924,6 +1013,64 @@ body::before {
         padding: 5px 10px;
         font-size: 0.85em;
         min-width: 30px;
+    }
+
+    /* Modals on mobile */
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+        padding: 30px 20px;
+    }
+
+    .modal-content h2 {
+        font-size: 2em;
+    }
+
+    .reward-display {
+        padding: 20px;
+    }
+
+    .reward-icon {
+        font-size: 4em;
+    }
+
+    .reward-text {
+        font-size: 1.2em;
+    }
+
+    .reward-description {
+        font-size: 0.9em;
+    }
+}
+
+/* Additional mobile optimizations for small screens */
+@media (max-width: 380px) {
+    .game-header h1 {
+        font-size: 1.6em;
+    }
+
+    .prime-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2em;
+    }
+
+    .tile {
+        font-size: 1.1em;
+        min-height: 45px;
+    }
+
+    .powerup-item {
+        min-width: 60px;
+        padding: 6px;
+    }
+
+    .powerup-icon {
+        font-size: 1.3em;
+    }
+
+    .powerup-name {
+        font-size: 0.55em;
     }
 }
 
